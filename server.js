@@ -1,11 +1,14 @@
+require("dotenv").config()
 const express = require("express")
 const mongoose = require("mongoose")
 const Product = require("./models/productModel")
-
 const app = express()
-const PORT = 3000
+
+const PORT = process.env.PORT
+const MONGO_URL = process.env.MONGO_URL
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.get("/", (req, res) => {
   res.send("Hello from express")
@@ -76,9 +79,7 @@ app.delete("/products/:id", async (req, res) => {
 })
 
 mongoose
-  .connect(
-    "mongodb+srv://darrickdevelops:Xvkm1LWwbYMDTPnf@projects.mmupqab.mongodb.net/learning?retryWrites=true&w=majority"
-  )
+  .connect(MONGO_URL)
   .then(() => {
     console.log("Connected to MongoDB")
     app.listen(PORT, () => {
